@@ -1,0 +1,34 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Deploys an Amazon SQS standard queue
+
+Parameters:
+  Stage:
+    Type: String
+    Default: DEV
+    Description: The stage into we deploy this template.''
+  QueueName:
+    Type: String
+    Default: AmazonSQS
+    Description: The name of Amazon SQS queue
+
+Resources:
+  SQSInbound:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub ${QueueName}-inbound
+  SQSOutbound:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub ${QueueName}-outbound
+
+Outputs:
+  SQSInbound:
+    Description: SQS name.
+    Value: !Ref SQSInbound
+    Export:
+      Name: !Sub '${Stage}:JMS-BRIDGE:AmazonSQSInbound'
+  SQSOutbound:
+    Description: SQS name.
+    Value: !Ref SQSOutbound
+    Export:
+      Name: !Sub '${Stage}:JMS-BRIDGE:AmazonSQSOutbound'
